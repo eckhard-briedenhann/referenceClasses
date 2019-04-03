@@ -1,17 +1,21 @@
 
 
 # ref class for edge
-state <- setRefClass("vertex", fields = list(id = "numeric", description = "character"), 
+state <- setRefClass("vertex", fields = list(id = "numeric", 
+                                             description = "character"), 
                      methods = list(
                        show = function(){
-                          cat("State\nDescription:",description, "\nID:",id,"\n")
+                          cat("State\nDescription:", description, "\nID:",id,"\n")
                        }
                      ))
 
-transition <- setRefClass("edge", fields = list(from = "vertex", to = "vertex", weight = "numeric", description ="character"),
+transition <- setRefClass("edge", fields = list(from = "vertex", 
+                                                to = "vertex", 
+                                                weight = "numeric", 
+                                                description ="character"),
                           methods = list(
                             show = function(){
-                              cat("Edge\nDescription:",description,"\nWeight:",weight, "\nFrom:\n")
+                              cat("Edge\nDescription:",description,"\nWeight:", weight, "\nFrom:\n")
                               from$show()
                               cat("To:\n")
                               to$show()
@@ -19,26 +23,29 @@ transition <- setRefClass("edge", fields = list(from = "vertex", to = "vertex", 
 )
 
 adjList <- setRefClass("adjList", fields = list(adjs = "list"),
-                       methods = list(
-                         addEdge = function(e){
-                           if(!("edge" %in% class(e))){
-                             stop("Cannot add non edge class to adjacency list")
+                         methods = list(
+                           addEdge = function(e){
+                             if(!("edge" %in% class(e))){
+                               stop("Cannot add non edge class to adjacency list")
+                             }
+                             vName <- paste0("v",e$from$id)
+                             adjs[[vName]] <<- c(adjs[[vName]],e$to$id)
+                             cat("Edge Added")
+                           },
+                           show = function(){
+                             vNames <- names(adjs)
+                             for(vN in vNames){
+                              cat("Vertex:",vN,"\n")
+                              cat("Adjs:",adjs[[vN]],"\n")
+                             }
                            }
-                           vName <- paste0("v",e$from$id)
-                           adjs[[vName]] <<- c(adjs[[vName]],e$to$id)
-                           cat("Edge Added")
-                         },
-                         show = function(){
-                           vNames <- names(adjs)
-                           for(vN in vNames){
-                            cat("Vertex:",vN,"\n")
-                            cat("Adjs:",adjs[[vN]],"\n")
-                           }
-                         }
-                       )
+                         )
                        )
 
-dag <- setRefClass("dag", fields = list( vertices = "list", edges = "list", adjList = "adjList", vertexCount = "numeric"),
+dag <- setRefClass("dag", fields = list(vertices = "list",
+                                        edges = "list",
+                                        adjList = "adjList",
+                                        vertexCount = "numeric"),
                   methods = list(
                     newVertex = function(description){
                       v <- state(id = vertexCount, description = description )
@@ -47,16 +54,20 @@ dag <- setRefClass("dag", fields = list( vertices = "list", edges = "list", adjL
                       return(v)
                     },
                     createTransition = function(from, to, weight, description){
-                      
                       e <- transition(from = from, to = to, weight= weight, description = description)
                       edges <<- c(edges,e)
                       adjList$addEdge(e)
                       
                       return(e)
+                    },
+                    testMe = function(){
+                      boost_sample()
                     }
                   ))
 
 g <- dag(vertexCount = 0)
+
+
 
 awake <- g$newVertex(description = "Awake")
 awake
@@ -73,7 +84,38 @@ getDressedA
 getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
 getDressedB
 
-g$adjList
 
+
+# 
+# setClass("GTest", slots = c(graph = "numeric"))
+# setGeneric("graph", function(x) standardGeneric("graph"))
+# setMethod("graph", "GTest", function(x) x@graph)
+# 
+# g <- new("GTest")
+# g
+# 
+# graph()
+# 
+# G <- setRefClass("g_test", 
+#                  fields = list(vertices = "list", 
+#                                edges = "list",
+#                                adjList = "adjList",
+#                                vertexCount = "numeric"),
+#                    methods = list(
+#                      newVertex = function(description){
+#                        v <- state(id = vertexCount, description = description )
+#                        vertexCount <<- vertexCount + 1
+#                        vertices <<- c(vertices,v)
+#                        return(v)
+#                      },
+#                      createTransition = function(from, to, weight, description){
+#                        
+#                        e <- transition(from = from, to = to, weight= weight, description = description)
+#                        edges <<- c(edges,e)
+#                        adjList$addEdge(e)
+#                        
+#                        return(e)
+#                      }
+#                    ))
 
 
