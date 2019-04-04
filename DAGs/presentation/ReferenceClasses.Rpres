@@ -1,11 +1,13 @@
 ReferenceClasses
 ========================================================
 author: Rob Bennetto and Eckhard Briedenhann
-date: 2019-04-06
+css : chalcid.css
+date: 2019-04-06 
 autosize: true
 
 Introduction
 ========================================================
+
 Chalcid
 
 SatRday
@@ -45,6 +47,9 @@ How do we over engineer this?
 incremental: true
 
 What do we need?
+``` {r, echo=TRUE, fig.align="center", out.width= "100%"}
+source('../graph_fns.R') 
+```
 
 - A way to represent a **state** of being
 - A way to represent the **transitions** between states as well as their attributes (*time, awesomeness-factor, etc.*)
@@ -63,10 +68,9 @@ Graph?
 ========================================================
 incremental: true
 
-TODO: Need a graph for this
-
-StateA  --->     StateB  --->     StateC
-
+```{r, echo=FALSE, fig.align="center"}
+   knitr::include_graphics('./simple_graphs/acyclic.png') 
+```
 
 Process:
 * Assign weights to the transitions

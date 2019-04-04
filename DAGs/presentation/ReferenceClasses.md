@@ -1,11 +1,13 @@
 ReferenceClasses
 ========================================================
 author: Rob Bennetto and Eckhard Briedenhann
-date: 2019-04-06
+css : chalcid.css
+date: 2019-04-06 
 autosize: true
 
 Introduction
 ========================================================
+
 Chalcid
 
 SatRday
@@ -42,6 +44,10 @@ incremental: true
 
 What do we need?
 
+```r
+source('../graph_fns.R') 
+```
+
 - A way to represent a **state** of being
 - A way to represent the **transitions** between states as well as their attributes (*time, awesomeness-factor, etc.*)
 - **Algorithms** to calculate the the optimal set of state to traverse
@@ -57,10 +63,8 @@ Graph?
 ========================================================
 incremental: true
 
-TODO: Need a graph for this
 
-StateA  --->     StateB  --->     StateC
-
+<img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
 
 Process:
 * Assign weights to the transitions
@@ -69,6 +73,7 @@ Process:
 
 Rob's face
 ========================================================
+
 
 <img src="./calc.gif" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="80%" style="display: block; margin: auto;" />
 
@@ -85,8 +90,8 @@ incremental: true
 * Directed Edges ( pairs of nodes)
 * No Cycles
 
-
 <img src="./wikiDAG.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="30%" style="display: block; margin: auto;" />
+
 
 Representation problem
 ========================================================
@@ -229,6 +234,7 @@ Node n3(3);
 graph.AddEdge(&n1, &n2);
 graph.AddEdge(&n2, &n3);
 ```
+
 
 Object Orientated Programming in R?
 ========================================================
@@ -388,6 +394,7 @@ TODO>: Graph explanation and function case
 
 Overengineering for the win
 ========================================================
+
 
 The stack:
 
