@@ -119,3 +119,21 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
 # 
 # visSave(g$plot(), 'dag_simple.html' , background = "white")
 
+
+
+g <- dag(vertexCount = 0)
+n = 30
+for(i in 1:n){
+  g$newVertex(description = i %>% as.character())
+}
+s<- function(n) { sample(1:n, n)}
+fs<- c(s(n), s(n)); ts <- c(s(n), s(n));
+for(i in 1:length(fs)){
+  g$createTransition(from =g$vertices[[fs[i]]], 
+                     to = g$vertices[[ts[i]]],
+                     weight = rnorm(1), 
+                    'random edge') 
+}
+
+#g$plot()
+#g$plot_heirarchy()
