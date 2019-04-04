@@ -7,26 +7,36 @@ autosize: true
 
 Introduction
 ========================================================
- 
+
 Chalcid
+
+SatRday
+========================================================
+<img src="./satRDay.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
+
 
 SatRday
 ========================================================
 incremental: true
 
-- What to wear?
+
+- What do we wear?
   - Normal clothes?
   - Formal clothes?
   - Zebra suit?
 
-- Fit in with other responsibilities 
+- How do we fit it in with all of our other responsibilities?
  - Will there be enough time?
  - How long will it take?
+ 
+ - What do we do first?
+  - Create presentation?
+  - Code up something interesting and hope the presentation self-materialises?
+  - Go find a corner to cry in?
 
-========================================================
-type: prompt
-transition-speed: slow
-<img src="./stressed.jpg" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="60%" style="display: block; margin: auto;" />
+***
+
+<img src="./stressed.jpg" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="70%" style="display: block; margin: auto;" />
 
 How do we over engineer this?
 ========================================================
@@ -37,6 +47,21 @@ What do we need?
 ```r
 source('../graph_fns.R') 
 ```
+
+- A way to represent a **state** of being
+- A way to represent the **transitions** between states as well as their attributes (*time, awesomeness-factor, etc.*)
+- **Algorithms** to calculate the the optimal set of state to traverse
+
+<img src="./science.jpg" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="40%" style="display: block; margin: auto;" />
+
+Graph?
+========================================================
+
+TODO: Slide explaining graphs
+
+Graph?
+========================================================
+incremental: true
 
 
 <img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
@@ -49,23 +74,128 @@ Process:
 Rob's face
 ========================================================
 
-<img src="./calc.gif" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="100%" style="display: block; margin: auto;" />
 
-Directed Acyclic Graphs (aka DAGs)
+<img src="./calc.gif" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="80%" style="display: block; margin: auto;" />
+
+DAGs
 ========================================================
+
+DAGs
+========================================================
+incremental: true
+
+**Directed Acyclic graphs (aka DAG)**
 
 * Nodes (Vertices)
 * Directed Edges ( pairs of nodes)
 * No Cycles
 
+<img src="./wikiDAG.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="30%" style="display: block; margin: auto;" />
 
-<img src="./wikiDAG.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="40%" style="display: block; margin: auto;" />
 
 Representation problem
+========================================================
+
+Nodes:
+
+```r
+nodes <- list( n1 = list(id = 1), n2 = list(id = 2),
+                n3 = list(id = 3), n4 = list(id = 4))
+```
+
+Helper functions:
+
+```r
+getNodeID <- function(node){
+  paste0("n",node$id)
+}
+```
+
+***
+
+Vectorised Graph:
+
+```r
+graph <- data.frame(From = c(1,1,2,3),
+                    To = c(2,3,4,4))
+```
+
+
+```
+  From To
+1    1  2
+2    1  3
+3    2  4
+4    3  4
+```
+
+
+List Graph:
+
+```r
+graph <- list()
+graph[[getNodeID(n1)]] <- list(n2,n3)
+graph[[getNodeID(n2)]] <- list(n4)
+graph[[getNodeID(n3)]] <- list(n4)
+```
+
+```
+$n1
+$n1[[1]]
+$n1[[1]]$id
+[1] 2
+
+
+$n1[[2]]
+$n1[[2]]$id
+[1] 4
+
+
+
+$n2
+$n2[[1]]
+$n2[[1]]$id
+[1] 4
+
+
+
+$n4
+$n4[[1]]
+$n4[[1]]$id
+[1] 4
+```
+
+
+========================================================
+
+<img src="./smellyCheeseCat.gif" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="80%" style="display: block; margin: auto;" />
+
+Why does this smell funny?
+========================================================
+incremental: true
+
+* **No typing** - live in the wild west
+* **No standard** - reinventing the wheel one line at a time
+* **No abstraction** - very verbose with a lot of index hunting
+
+Why does this smell funny?
+========================================================
+
+* **No typing** - live in the wild west
+* **No standard** - reinventing the wheel one line at a time
+* **No abstraction** - very verbose with a lot of index hunting
+
+<img src="./noTime.jpeg" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="50%" style="display: block; margin: auto;" />
+
+
+C++ World
 ========================================================
 incremental: true
 
 Object Orientated Programming:
+
+
+Node Class:
 ```{ width = "50%"}
 // Vector object
 class Node {
@@ -73,6 +203,10 @@ class Node {
     Node(int id):id(id){}
     int id;
 };
+```
+
+Graph Class:
+```
 
 class DAG {
   public:
@@ -82,8 +216,14 @@ class DAG {
   void addEdge(Node* from, Node* to){
     adjList[from->id].push_back(to);
   }
-  std::vector<*Node> adjList; 
+  std::vector<std::vector<*Node>> adjList; 
 };
+```
+
+***
+In practice:
+
+```
 
 // Init nodes
 Node n1(1); 
@@ -94,38 +234,12 @@ Node n3(3);
 graph.AddEdge(&n1, &n2);
 graph.AddEdge(&n2, &n3);
 ```
-***
-
-R:
-```
-// Helper function
-
-getID <- function(node){
-  paste0("v",node$id)
-}
-
-# Create Nodes
-
-n1 <- list(id = 1)
-n2 <- list(id = 2)
-n3 <- list(id = 3)
-
-# 1 --> 2 --> 3
-graph[[getID(n1)]] <- list(n2)
-graph[[paste0(n2)]] <- list(n2)
-```
 
 
+Object Orientated Programming in R?
 ========================================================
 
-<img src="./smellyCheeseCat.gif" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="100%" style="display: block; margin: auto;" />
-
-Why does this smell funny?
-========================================================
-
-* **No typing** - live in the wild west
-* **No abstraction** - very verbose 
-
+<img src="./please.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="50%" style="display: block; margin: auto;" />
 
 Object Orientated Programming in R
 ========================================================
@@ -150,7 +264,17 @@ print(n1)
 Class: node 
 ID: 1
 ```
-***
+
+**Benefits:**
+
+* At least there is some kind of structure
+* Class specific functions might be useful
+
+Overall: 5/10
+
+Object Orientated Programming in R
+========================================================
+incremental: true
 
 S4 Classes:
 
@@ -172,8 +296,18 @@ Class: node
 ID: 1
 ```
 
-Reference Classes
+**Benefits**:
+
+* Typing
+* Structured way of creating and interacting with object (even though you're using `@` instread of `$`)
+
+Overall 8/10
+
+Reference Classes (This is where you clap hands)
 ========================================================
+incremental: true
+
+Reference Classes:
 
 
 ```r
@@ -193,22 +327,81 @@ Node
 ID: 1 
 ```
 
-
-Benefits:
+**Benefits**:
 
 * Unlike S3 and S4 methods belong to class
 * Able to have pointer like functionality
 * Powerful abstraction layer
 
+Overall 10/10 !
 
 
 ========================================================
 
-<img src="./attention.jpg" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="100%" style="display: block; margin: auto;" />
+<img src="./attention.jpg" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="80%" style="display: block; margin: auto;" />
+
+Reference Classes: Under the hood
+========================================================
+#incremental: true
+
+Implementation:
+- **S4** class
+- In own **environment**
+
+TODO: Add image showing explanation
+
+***
+Why worry?
+
+```r
+n1 <- node(id = 1)
+n1
+```
+
+```
+Node
+ID: 1 
+```
+
+Wrong way to copy:
+
+```r
+n2 = n1
+n2$id <- 2
+n1
+```
+
+```
+Node
+ID: 2 
+```
+
+Right way to copy:
+
+```r
+n2 <- n1$copy()
+n2$id <- 2
+n1
+```
+
+```
+Node
+ID: 1 
+```
+
+TODO>: Graph explanation and function case
+
+
+Overengineering for the win
+========================================================
+
+
+The stack:
 
 
 Let's get this party starting?
 ========================================================
+incremental: true
 
 
 State:
