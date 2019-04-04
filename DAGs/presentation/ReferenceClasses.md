@@ -336,7 +336,7 @@ Overall 10/10 !
 
 Reference Classes: Under the hood
 ========================================================
-incremental: true
+#incremental: true
 
 Implementation:
 - **S4** class
@@ -360,7 +360,7 @@ ID: 1
 Wrong way to copy:
 
 ```r
-n2 <- n1
+n2 = n1
 n2$id <- 2
 n1
 ```
@@ -383,6 +383,13 @@ Node
 ID: 1 
 ```
 
+TODO>: Graph explanation and function case
+
+
+Overengineering for the win
+========================================================
+
+The stack:
 
 
 Let's get this party starting?
