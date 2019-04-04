@@ -1,14 +1,14 @@
 ReferenceClasses
 ========================================================
 author: Rob Bennetto and Eckhard Briedenhann
-date: 2019-04-06
+css : chalcid.css
+date: 2019-04-06 
 autosize: true
 
 Introduction
 ========================================================
-
+ 
 Chalcid
-
 
 SatRday
 ========================================================
@@ -34,11 +34,12 @@ incremental: true
 
 What do we need?
 
+```r
+source('../graph_fns.R') 
+```
 
-TODO: Need a graph for this
 
-StateA  --->     StateB  --->     StateC
-
+<img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
 
 Process:
 * Assign weights to the transitions
@@ -48,7 +49,7 @@ Process:
 Rob's face
 ========================================================
 
-<img src="./calc.gif" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="100%" style="display: block; margin: auto;" />
+<img src="./calc.gif" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="100%" style="display: block; margin: auto;" />
 
 Directed Acyclic Graphs (aka DAGs)
 ========================================================
@@ -58,7 +59,7 @@ Directed Acyclic Graphs (aka DAGs)
 * No Cycles
 
 
-<img src="./wikiDAG.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="40%" style="display: block; margin: auto;" />
+<img src="./wikiDAG.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="40%" style="display: block; margin: auto;" />
 
 Representation problem
 ========================================================
@@ -117,7 +118,7 @@ graph[[paste0(n2)]] <- list(n2)
 
 ========================================================
 
-<img src="./smellyCheeseCat.gif" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="100%" style="display: block; margin: auto;" />
+<img src="./smellyCheeseCat.gif" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="100%" style="display: block; margin: auto;" />
 
 Why does this smell funny?
 ========================================================
@@ -203,7 +204,7 @@ Benefits:
 
 ========================================================
 
-<img src="./attention.jpg" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="100%" style="display: block; margin: auto;" />
+<img src="./attention.jpg" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" width="100%" style="display: block; margin: auto;" />
 
 
 Let's get this party starting?

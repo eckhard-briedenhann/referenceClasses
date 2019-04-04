@@ -50,9 +50,9 @@ NumericVector boost_sample_2(){
 
 // [[Rcpp::export]]
 NumericVector shortest_path_a_b(int a, int b, NumericVector froms, NumericVector tos, NumericVector weights){
-  DirectedGraph g;
-  
-  dijkstra_shortest_paths(g, s, predecessor_map(&p[0]).distance_map(&d[0]));
+  // DirectedGraph g;
+  // 
+  // dijkstra_shortest_paths(g, s, predecessor_map(&p[0]).distance_map(&d[0]));
   
 }
 
@@ -95,8 +95,8 @@ NumericVector timesTwo(NumericVector x) {
 // run after the compilation.
 //
 
-/*** R
-timesTwo(42)
-boost_sample()
-boost_sample_2();
-*/
+
+// timesTwo(42)
+// boost_sample()
+// boost_sample_2();
+

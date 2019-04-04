@@ -1,5 +1,12 @@
-
-
+library(visNetwork)
+library(dplyr)
+library(purrr)
+library(magrittr)
+#if(file.exists('graph_fns.cpp')){
+  #Rcpp::sourceCpp('graph_fns.cpp')  
+#}else{
+  #Rcpp::sourceCpp('../graph_fns.cpp')  
+#}
 # ref class for edge
 state <- setRefClass("vertex", fields = list(id = "numeric", 
                                              description = "character"), 
@@ -30,7 +37,7 @@ adjList <- setRefClass("adjList", fields = list(adjs = "list"),
                              }
                              vName <- paste0("v",e$from$id)
                              adjs[[vName]] <<- c(adjs[[vName]],e$to$id)
-                             cat("Edge Added")
+                             #cat("Edge Added")
                            },
                            show = function(){
                              vNames <- names(adjs)
@@ -60,62 +67,55 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                       
                       return(e)
                     },
-                    testMe = function(){
-                      boost_sample()
+                    # testMe = function(){
+                    #   boost_sample()
+                    # },
+                    plot = function(height = 1080, width = 1920){
+                      if(edges %>% length > 0){
+                        edgemat<- data.frame( 
+                                              from = lapply(edges, function(i){ return(i$from$id)} ) %>% unlist,
+                                              to = lapply(edges, function(i){ return(i$to$id)} ) %>% unlist,
+                                              arrows =  "middle",
+                                              weight = lapply(edges, function(i){ return(i$weight)} ) %>% unlist
+                                            )
+                      }else{
+                        edgemat <- NULL
+                      }
+                      nodemat <- data.frame(
+                        id = lapply(vertices, function(i){return(i$id)}) %>% unlist,
+                        label = lapply(vertices, function(i){return(i$description)}) %>% unlist) 
+                      
+                      return (visNetwork(nodemat, edgemat, height = height, width = width))
+                    },
+                    plot_heirarchy = function(){
+                      return (plot() %>% visHierarchicalLayout())
                     }
                   ))
 
-g <- dag(vertexCount = 0)
 
 
-
-awake <- g$newVertex(description = "Awake")
-awake
-
-dressedA <- g$newVertex(description = "DressedA")
-dressedA
-
-dressedB <- g$newVertex(description = "DressedB")
-dressedB
-
-getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
-getDressedA
-
-getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
-getDressedB
-
-
-
+# g <- dag(vertexCount = 0)
+# node_a <- g$newVertex(description = "A")
+# g$plot(height = 200,width = 500)
+# node_b <- g$newVertex(description = "B")
+# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
+# # disable the physics engine so that we can create some static charts.
+# getDressedA <- g$createTransition(from = node_a, to = node_b, weight = 1, description = "Step 1")
+# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
 # 
-# setClass("GTest", slots = c(graph = "numeric"))
-# setGeneric("graph", function(x) standardGeneric("graph"))
-# setMethod("graph", "GTest", function(x) x@graph)
+# node_c <- g$newVertex(description = "C")
+# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
 # 
-# g <- new("GTest")
-# g
-# 
-# graph()
-# 
-# G <- setRefClass("g_test", 
-#                  fields = list(vertices = "list", 
-#                                edges = "list",
-#                                adjList = "adjList",
-#                                vertexCount = "numeric"),
-#                    methods = list(
-#                      newVertex = function(description){
-#                        v <- state(id = vertexCount, description = description )
-#                        vertexCount <<- vertexCount + 1
-#                        vertices <<- c(vertices,v)
-#                        return(v)
-#                      },
-#                      createTransition = function(from, to, weight, description){
-#                        
-#                        e <- transition(from = from, to = to, weight= weight, description = description)
-#                        edges <<- c(edges,e)
-#                        adjList$addEdge(e)
-#                        
-#                        return(e)
-#                      }
-#                    ))
+# getDressedB <- g$createTransition(from = node_b, to = node_c, weight = 0.5, description = "Step 2")
+# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
 
+#getDressedCA <- g$createTransition(from = node_c, to = node_a, weight = 1, description = "Step 3")
+#g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
+
+# getDressedAC <- g$createTransition(from = node_a, to = node_c, weight = 1, description = "Step 3")
+# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
+
+# g$plot() %>% visExport(type = 'png', name = 'dag_simple')  
+# 
+# visSave(g$plot(), 'dag_simple.html' , background = "white")
 
