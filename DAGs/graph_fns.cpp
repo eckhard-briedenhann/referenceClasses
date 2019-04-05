@@ -32,26 +32,9 @@ typedef property<edge_weight_t, int> EdgeWeightProperty;
 typedef std::pair<int, int> Edge;
 typedef adjacency_list<listS, vecS, directedS, no_property, EdgeWeightProperty>
     DirectedGraph;
-typedef graph_traits<DirectedGraph>::edge_iterator edge_iterator;
 typedef graph_traits<DirectedGraph>::edge_descriptor edge_descriptor;
 typedef graph_traits<DirectedGraph>::vertex_descriptor vertex_descriptor;
 
-// [[Rcpp::export]]
-NumericVector boost_sample_2() {
-  DirectedGraph* g = new DirectedGraph();
-  add_edge(0, 1, 8, *g);
-  add_edge(0, 3, 18, *g);
-  std::pair<edge_iterator, edge_iterator> ei = edges(*g);
-  std::cout << "Number of edges = " << num_edges(*g) << "\n";
-  std::cout << "Edge list:\n";
-
-  std::copy(ei.first, ei.second,
-            std::ostream_iterator<adjacency_list<>::edge_descriptor>{std::cout,
-                                                                     "\n"});
-
-  std::cout << std::endl;
-  return 0;
-}
 
 // [[Rcpp::export]]
 std::vector<int> get_untouched_nodes(NumericVector e_start, int num_nodes) {
@@ -76,7 +59,7 @@ std::vector<int> shortest_path_a_b(int a, int b, NumericVector froms,
   std::vector<int> FV = Rcpp::as<std::vector<int>>(froms);
   std::vector<int> TV = Rcpp::as<std::vector<int>>(tos);
   std::vector<double> w = Rcpp::as<std::vector<double>>(weights);
-
+  
   Edge edge_array[FV.size()];
   int W[FV.size()];
 
@@ -113,33 +96,6 @@ std::vector<int> shortest_path_a_b(int a, int b, NumericVector froms,
   }
   path.push_back(s);
   std::reverse(path.begin(), path.end());
+  
   return path;
-}
-
-// [[Rcpp::export]]
-NumericVector boost_sample() {
-  DirectedGraph g;
-
-  add_edge(0, 1, 8, g);
-  add_edge(0, 3, 18, g);
-  add_edge(1, 2, 20, g);
-  add_edge(2, 3, 2, g);
-  add_edge(3, 1, 1, g);
-  add_edge(1, 3, 7, g);
-  add_edge(1, 4, 1, g);
-  add_edge(4, 5, 6, g);
-  add_edge(2, 5, 7, g);
-
-  std::pair<edge_iterator, edge_iterator> ei = edges(g);
-
-  std::cout << "Number of edges = " << num_edges(g) << "\n";
-  std::cout << "Edge list:\n";
-
-  std::copy(ei.first, ei.second,
-            std::ostream_iterator<adjacency_list<>::edge_descriptor>{std::cout,
-                                                                     "\n"});
-
-  std::cout << std::endl;
-
-  return 0;
 }

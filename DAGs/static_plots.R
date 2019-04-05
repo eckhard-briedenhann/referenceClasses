@@ -37,21 +37,25 @@ g$plot(colorRootLeaves = T, path_highlight = g$critical_path_ab(g$root_nodes()[1
 
 g$close_graph()
 g$plot(colorRootLeaves = T)
-g$plot(colorRootLeaves = T, path_highlight = g$critical_path_ab(g$root_nodes()[1],
-                                                                g$leaf_nodes()[1]))
+g$plot(colorRootLeaves = T, path_highlight = g$critical_path_ab(g$root_nodes(),
+                                                                g$leaf_nodes()))
 
-g$plot(colorRootLeaves = T, path_highlight = g$shortest_path_ab(g$root_nodes()[1],
-                                                                g$leaf_nodes()[1]))
+g$plot(colorRootLeaves = T, path_highlight = g$shortest_path_ab(g$root_nodes(),
+                                                                g$leaf_nodes()))
 
 g$plot_heirarchy() 
 
-g$close_graph()
-g$plot(colorRootLeaves = T)
-g$plot_heirarchy(colorRootLeaves = T, turn = T, g$shortest_path_ab(g$root_nodes()[1],
-                                                                   g$leaf_nodes()[1]))
 
-g$plot_heirarchy(colorRootLeaves = T, turn = T, g$critical_path_ab(g$root_nodes()[1],
-                                                                   g$leaf_nodes()[1]))
+g$plot(colorRootLeaves = T)
+g$plot_heirarchy(colorRootLeaves = T)
+g$plot_heirarchy(colorRootLeaves = T, turn = T)
+g$close_graph()
+g$plot_heirarchy(colorRootLeaves = T, turn = T)
+g$plot_heirarchy(colorRootLeaves = T, turn = T, g$shortest_path_ab(g$root_nodes(),
+                                                                   g$leaf_nodes()))
+
+g$plot_heirarchy(colorRootLeaves = T, turn = T, g$critical_path_ab(g$root_nodes(),
+                                                                   g$leaf_nodes()))
 
 
 
