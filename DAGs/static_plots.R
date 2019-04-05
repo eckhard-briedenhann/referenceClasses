@@ -1,6 +1,7 @@
 Rcpp::sourceCpp('graph_fns.cpp')
 source('graph_fns.R')
 
+
 g <- dag(vertexCount = 0)
 n = 30
 for(i in 1:n){
@@ -25,17 +26,18 @@ if(!file.exists('classic_bst_nodes.csv')){
 g<- dag()
 g$load_from_file(paste0(fileprefix,'classic_bst'))
 g$plot()
+
+g$plot(colorRootLeaves = T, path_highlight = g$shortest_path_ab(0,99) )
 g$close_graph()
+g$plot(colorRootLeaves = T)
+g$plot(colorRootLeaves = T, path_highlight = g$shortest_path_ab(0,100) )
+
 g$plot_heirarchy() 
 
 g$close_graph()
 g$plot(colorRootLeaves = T)
 g$plot_heirarchy(colorRootLeaves = T, turn = T)
 
-h<- dag()
-h$load_from_file(paste0(fileprefix,'sample_m'))
-h$plot()
-h$close_graph()
 
 
 # g <- dag(vertexCount = 0)

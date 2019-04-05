@@ -74,7 +74,7 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                     # testMe = function(){
                     #   boost_sample()
                     # },
-                    plot = function(height = 1080, width = 1920, colorRootLeaves = F){
+                    plot = function(height = 1080, width = 1920, colorRootLeaves = F, path_highlight = NULL){
                       if(edges %>% length > 0){
                         fs <- lapply(edges, function(i){ return(i$from$id)} ) %>% unlist
                         ts <- lapply(edges, function(i){ return(i$to$id)} ) %>% unlist
@@ -82,6 +82,18 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                                              to = ts,
                                              arrows =  "middle",
                                              weight = lapply(edges, function(i){ return(i$weight)} ) %>% unlist )
+                        edgemat %<>% mutate(key = paste0(from, "-", to))
+                        
+                        if(length(path_highlight) > 1){
+                          p<- data.frame(from = path_highlight[1:(length(path_highlight)-1)],
+                                         to = path_highlight[2:length(path_highlight)])
+                          p %<>% mutate(key = paste0(from,"-",to))
+                          edgemat$color<-'#97C2FC'
+                          edgemat$color[edgemat$key %in% p$key] <- '#000000'
+                          edgemat$width<-1
+                          edgemat$width[edgemat$key %in% p$key] <- 3
+                          
+                        }
                       }else{
                         edgemat <- NULL
                       }
@@ -132,10 +144,20 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                           createTransition(from = vertices[[i]], to = end_node, weight = 0, "")
                         }
                       }
+                    },
+                    shortest_path_ab = function(a_idx, b_idx){
+                      fs <- lapply(g$edges, function(i){ return(i$from$id)} ) %>% unlist
+                      ts <- lapply(g$edges, function(i){ return(i$to$id)} ) %>% unlist
+                      edgemat<- data.frame(from = fs,
+                                           to = ts,
+                                           arrows =  "middle",
+                                           weight = lapply(g$edges, function(i){ return(i$weight)} ) %>% unlist )
+                      edgemat$weight <- (edgemat$weight - (edgemat$weight %>% min()))*10
+                      
+                      path<- shortest_path_a_b(a_idx, b_idx, edgemat$from, edgemat$to, weights = edgemat$weight, num_nodes =g$vertexCount)
+                      return(path)
                     }
                   ))
-
-
 
 
 
