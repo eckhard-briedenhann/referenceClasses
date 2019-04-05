@@ -25,35 +25,48 @@ if(!file.exists('classic_bst_nodes.csv')){
 
 g<- dag()
 g$load_from_file(paste0(fileprefix,'classic_bst'))
-g$plot()
+dest<- paste0(getwd(), '/presentation/')
+g$plot() %>% visSave(file = paste0(dest,'bst_no_heirarchy.html'))
+g$plot_heirarchy() %>% visSave(file = paste0(dest,'bst_heirarchy.html'))
+g$plot_heirarchy(colorRootLeaves = T) %>% visSave(file = paste0(dest,'bst_heirarchy_color.html'))
+g$plot(colorRootLeaves = T)  %>% visSave(file = paste0(dest,'bst_no_heirarchy_color.html'))
+g$plot_heirarchy(colorRootLeaves = T, turn = T) %>% visSave(file = paste0(dest,'bst_heirarchy_color_turn.html'))
 
-g$plot(colorRootLeaves = T)
-
-g$plot(colorRootLeaves = T, path_highlight = g$critical_path_ab(g$root_nodes()[1],
-                                                                g$leaf_nodes()[1]))
 
 g$close_graph()
+g$plot_heirarchy(colorRootLeaves = T, turn = T)%>% visSave(file = paste0(dest,'proj_man_dag.html'))
+
+g$plot_heirarchy(colorRootLeaves = T, turn = T, g$shortest_path(g$root_nodes(),
+                                                                g$leaf_nodes())) %>% 
+  visSave(file = paste0(dest,'proj_man_dag_sp.html'))
+
+
+g$plot_heirarchy(colorRootLeaves = T, turn = T, g$critical_path(g$root_nodes(),
+                                                                g$leaf_nodes())) %>% 
+  visSave(file = paste0(dest,'proj_man_dag_cp.html'))
+
+
+
+g$plot(colorRootLeaves = T, path_highlight = g$critical_path(g$root_nodes(),g$leaf_nodes()))
+
+
 
 g$plot(colorRootLeaves = T)
-g$plot(colorRootLeaves = T, path_highlight = g$critical_path_ab(g$root_nodes(),
+g$plot(colorRootLeaves = T, path_highlight = g$critical_path(g$root_nodes(),
                                                                 g$leaf_nodes()))
 
-g$plot(colorRootLeaves = T, path_highlight = g$shortest_path_ab(g$root_nodes(),
+g$plot(colorRootLeaves = T, path_highlight = g$shortest_path(g$root_nodes(),
                                                                 g$leaf_nodes()))
 
 g$plot_heirarchy() 
 
 
-g$plot(colorRootLeaves = T)
-g$plot_heirarchy(colorRootLeaves = T)
-g$plot_heirarchy(colorRootLeaves = T, turn = T)
-g$close_graph()
-g$plot_heirarchy(colorRootLeaves = T, turn = T)
-g$plot_heirarchy(colorRootLeaves = T, turn = T, g$shortest_path_ab(g$root_nodes(),
+
+g$plot_heirarchy(colorRootLeaves = T, turn = T, g$shortest_path(g$root_nodes(),
                                                                    g$leaf_nodes()))
 
-g$plot_heirarchy(colorRootLeaves = T, turn = T, g$critical_path_ab(g$root_nodes(),
-                                                                   g$leaf_nodes()))
+g$plot_heirarchy(colorRootLeaves = T, turn = T, g$critical_path(g$root_nodes(),
+                                                                g$leaf_nodes()))
 
 
 

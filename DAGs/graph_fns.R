@@ -153,7 +153,7 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                         }
                       }
                     },
-                    shortest_path_ab = function(from, to){
+                    shortest_path = function(from, to){
                       fs <- lapply(g$edges, function(i){ return(i$from$id)} ) %>% unlist
                       ts <- lapply(g$edges, function(i){ return(i$to$id)} ) %>% unlist
                       edgemat<- data.frame(from = fs,
@@ -165,7 +165,7 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                       path<- shortest_path_a_b(from - 1, to - 1, edgemat$from, edgemat$to, weights = edgemat$weight, num_nodes =g$vertexCount)
                       return(path)
                     },
-                    critical_path_ab = function(from, to){
+                    critical_path = function(from, to){
                       fs <- lapply(g$edges, function(i){ return(i$from$id)} ) %>% unlist
                       ts <- lapply(g$edges, function(i){ return(i$to$id)} ) %>% unlist
                       edgemat<- data.frame(from = fs,

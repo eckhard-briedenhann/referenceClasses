@@ -2,19 +2,30 @@ ReferenceClasses
 ========================================================
 author: Rob Bennetto and Eckhard Briedenhann
 css : chalcid.css
+width: 1920
+height: 1080
 date: 2019-04-06 
 autosize: true
 
-Introduction
-========================================================
 
-Chalcid
-
-SatRday
 ========================================================
-```{r, echo=FALSE, fig.align="center"}
-   knitr::include_graphics('./satRDay.png')
-```
+incremental: true
+
+<div align="center">
+<img src="chalcid_logo.png" style="background-color:transparent; border:0px;
+box-shadow:none;"></img>
+</div>
+
+ - Distributor of Icepack services
+ - Consulting and Ops Research in Africa
+ - Insurance and Logstics
+
+ 
+========================================================
+<div align="center">
+<img src="satRDay.png" style="background-color:transparent; border:0px;
+box-shadow:none;"></img>
+</div>
 
 
 SatRday
@@ -91,7 +102,7 @@ DAGs
 ========================================================
 incremental: true
 
-**Directed Acyclic graphs (aka DAG)**
+**Directed Acyclic Graphs (aka DAG)**
 
 * Nodes (Vertices)
 * Directed Edges ( pairs of nodes)
@@ -108,8 +119,10 @@ incremental: true
 
 Nodes:
 ```{r}
-nodes <- list( n1 = list(id = 1), n2 = list(id = 2),
-                n3 = list(id = 3), n4 = list(id = 4))
+nodes <- list(n1 = list(id = 1),
+            n2 = list(id = 2),
+            n3 = list(id = 3), 
+            n4 = list(id = 4))
 ```
 
 Helper functions:
@@ -368,29 +381,112 @@ n1
 
 
 
-Let's get this party started?
+Let's get this party started!
 ========================================================
 incremental: true
 
 Create some reference classes.
 
 ```{r eval=FALSE, fig.align="cener"}
-g<- dag()
+g<-dag()
 g$load_from_file('classic_bst')
 g$plot()
 ```
+
+<div align="center">
 <iframe src="bst_no_heirarchy.html", width = 100%></iframe>
+</div>
+
 
 Other projections
 ========================================================
 incremental: true
 
-Create some reference classes.
-
 ```{r eval=FALSE}
 g$plot_heirarchy()
 ```
 <iframe src="bst_heirarchy.html"></iframe>
+
+Highlight features
+========================================================
+```{r eval=FALSE}
+g$plot_heirarchy(colorRootLeaves = T)
+```
+<iframe src="bst_heirarchy_color.html"></iframe>
+
+Highlight features
+========================================================
+```{r eval=FALSE}
+g$plot(colorRootLeaves = T)
+```
+<iframe src="bst_no_heirarchy_color.html"></iframe>
+
+Modify the structure
+========================================================
+```{r eval=FALSE}
+g$plot_heirarchy(colorRootLeaves = T, turn = T)
+```
+<iframe src="bst_heirarchy_color_turn.html"></iframe>
+
+Modify the structure
+========================================================
+```{r eval=FALSE}
+g$close_graph()
+g$plot_heirarchy(colorRootLeaves = T, turn = T)
+```
+<iframe src="proj_man_dag.html"></iframe>
+
+Some graph search
+========================================================
+incremental: true
+We might be interested in a feature of the graph
+- shortest paths
+- critical paths
+- min/max cut
+- or other features
+
+```{r eval=FALSE}
+g$shortest_path(g$root_nodes(), g$leaf_nodes())
+```
+
+<iframe src="proj_man_dag.html"></iframe>
+
+Some graph search
+========================================================
+```{r eval=FALSE}
+g$plot_heirarchy(T, T, g$shortest_path(g$root_nodes(), g$leaf_nodes()))
+```
+<iframe src="proj_man_dag_sp.html"></iframe>
+
+Some graph search
+========================================================
+```{r eval=FALSE}
+g$plot_heirarchy(T, T, g$critical_path(g$root_nodes(), g$leaf_nodes()))
+```
+<iframe src="proj_man_dag_cp.html"></iframe>
+
+Steady on
+========================================================
+incremental: true
+You're right, that was too quick. What just happened?
+
+
+```{r, echo=FALSE, fig.align="center", out.width= "45%"}
+   knitr::include_graphics('./refclass_stack.png')
+```
+
+Overkill?
+========================================================
+incremental: true
+
+- No, just the right amount of kill.
+- Don't reinvent the wheel
+- Graphs can have multiple metrics/features
+- Extracting features consistently for search is troublesome
+- Which brings us to the Zebra suit.
+
+
+
 
 Overengineering for the win
 ========================================================
