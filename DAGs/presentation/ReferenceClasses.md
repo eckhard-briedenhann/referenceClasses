@@ -57,13 +57,13 @@ source('../graph_fns.R')
 Graph?
 ========================================================
 
-TODO: Slide explaining graphs
+
 
 Graph?
 ========================================================
 incremental: true
 
-<img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+<img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="50%" style="display: block; margin: auto;" />
 
 Process:
 * Assign weights to the transitions
@@ -93,6 +93,7 @@ incremental: true
 
 Representation problem
 ========================================================
+incremental: true
 
 Nodes:
 
@@ -339,16 +340,22 @@ Overall 10/10 !
 
 Reference Classes: Under the hood
 ========================================================
-#incremental: true
+incremental: true
 
-Implementation:
-- **S4** class
-- In own **environment**
+Things to note:
 
-TODO: Add image showing explanation
+- Under the hood:
+  - A **S4** class
+  - It's own **environment**
+  
+<img src="./refClass.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" width="50%" />
+
+- Variables are **references** to underlying objects
 
 ***
 Why worry?
+
+Copying reference classes:
 
 ```r
 n1 <- node(id = 1)
@@ -373,6 +380,15 @@ Node
 ID: 2 
 ```
 
+
+<img src="./copyRef.png" title="plot of chunk unnamed-chunk-26" alt="plot of chunk unnamed-chunk-26" width="50%" style="display: block; margin: auto;" />
+
+
+Reference Classes: Under the hood
+========================================================
+incremental: true
+
+
 Right way to copy:
 
 ```r
@@ -386,7 +402,7 @@ Node
 ID: 1 
 ```
 
-TODO>: Graph explanation and function case
+
 
 
 Overengineering for the win
@@ -419,6 +435,19 @@ Create some reference classes.
 g$plot_heirarchy()
 ```
 <iframe src="bst_heirarchy.html"></iframe>
+=======
+- Create **reference class** objects
+  - Nodes
+  - Edges
+  - DAG
+- Implement algorithms using **Rpp**
+  - Shortest path
+  - Path with highest awesomeness value
+- Visualise graphs using **d3** 
+- BONUS ROUND: Create presentation using **knitR** 
+
+***
+<img src="./chuckApprove.jpeg" title="plot of chunk unnamed-chunk-28" alt="plot of chunk unnamed-chunk-28" width="50%" style="display: block; margin: auto;" />
 
 
 Let's get this party starting?
