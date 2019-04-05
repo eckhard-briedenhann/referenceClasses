@@ -27,15 +27,13 @@ g<- dag()
 g$load_from_file(paste0(fileprefix,'classic_bst'))
 g$plot()
 
-
-
-g$plot(colorRootLeaves = T, path_highlight = g$shortest_path_ab(g$root_nodes()[1],
-                                                                g$leaf_nodes()[1]))
+g$plot(colorRootLeaves = T)
 
 g$plot(colorRootLeaves = T, path_highlight = g$critical_path_ab(g$root_nodes()[1],
                                                                 g$leaf_nodes()[1]))
 
 g$close_graph()
+
 g$plot(colorRootLeaves = T)
 g$plot(colorRootLeaves = T, path_highlight = g$critical_path_ab(g$root_nodes(),
                                                                 g$leaf_nodes()))
