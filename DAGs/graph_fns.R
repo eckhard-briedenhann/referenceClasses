@@ -105,16 +105,24 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                         nodemat$color <- '#97C2FC'
                         nodemat$color[leaf_nodes()] <- '#AA3939' #red
                         nodemat$color[root_nodes()] <- '#2D8633' #green
+                        nodemat$color.border <- '#2B7CE9' #green
+                        nodemat$borderWidth <- 1
+                      }
+                      if(length(path_highlight) > 1){
+                        #may as well paint the borders of these nodes in black
+                        nodemat$color.border[nodemat$id %in% path_highlight] <- '#000000'
+                        nodemat$borderWidth[nodemat$id %in% path_highlight]<- 3
                       }
                       
                       return (visNetwork(nodemat, edgemat, height = height, width = width))
                     },
-                    plot_heirarchy = function(colorRootLeaves = F, turn = F){
+                    plot_heirarchy = function(colorRootLeaves = F, turn = F, path_highlight = NULL){
                       direction = NULL
                       if(turn){
                         direction <- 'lr'
                       }
-                      return (plot(colorRootLeaves = colorRootLeaves) %>% visHierarchicalLayout(direction = direction))
+                      return (plot(colorRootLeaves = colorRootLeaves, path_highlight = path_highlight) %>% 
+                                visHierarchicalLayout(direction = direction))
                     },
                     load_from_file = function(fileprefix){
                       E<- read.csv(paste0(fileprefix, '_edges.csv'))
@@ -145,7 +153,7 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                         }
                       }
                     },
-                    shortest_path_ab = function(a_idx, b_idx){
+                    shortest_path_ab = function(from, to){
                       fs <- lapply(g$edges, function(i){ return(i$from$id)} ) %>% unlist
                       ts <- lapply(g$edges, function(i){ return(i$to$id)} ) %>% unlist
                       edgemat<- data.frame(from = fs,
@@ -154,7 +162,21 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                                            weight = lapply(g$edges, function(i){ return(i$weight)} ) %>% unlist )
                       edgemat$weight <- (edgemat$weight - (edgemat$weight %>% min()))*10
                       
-                      path<- shortest_path_a_b(a_idx, b_idx, edgemat$from, edgemat$to, weights = edgemat$weight, num_nodes =g$vertexCount)
+                      path<- shortest_path_a_b(from - 1, to - 1, edgemat$from, edgemat$to, weights = edgemat$weight, num_nodes =g$vertexCount)
+                      return(path)
+                    },
+                    critical_path_ab = function(from, to){
+                      fs <- lapply(g$edges, function(i){ return(i$from$id)} ) %>% unlist
+                      ts <- lapply(g$edges, function(i){ return(i$to$id)} ) %>% unlist
+                      edgemat<- data.frame(from = fs,
+                                           to = ts,
+                                           arrows =  "middle",
+                                           weight = lapply(g$edges, function(i){ return(i$weight)} ) %>% unlist )
+                      edgemat$weight <- (edgemat$weight - (edgemat$weight %>% min()))*10
+                      #a critical path is the longest path from a-b, which is the same as the inverted edge weights in the potivie domain
+                      m<- edgemat$weight %>% max()
+                      edgemat$weight <- m - edgemat$weight
+                      path<- shortest_path_a_b(from - 1, to - 1, edgemat$from, edgemat$to, weights = edgemat$weight, num_nodes =g$vertexCount)
                       return(path)
                     }
                   ))
