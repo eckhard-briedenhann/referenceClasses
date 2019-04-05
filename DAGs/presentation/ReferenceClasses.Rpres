@@ -48,7 +48,7 @@ incremental: true
 
 What do we need?
 ``` {r, echo=TRUE, fig.align="center", out.width= "100%"}
-source('../graph_fns.R') 
+source('../graph_fns.R')
 ```
 
 - A way to represent a **state** of being
@@ -353,6 +353,30 @@ Overengineering for the win
 ========================================================
 
 The stack:
+
+Let's get this party started?
+========================================================
+incremental: true
+
+Create some reference classes.
+
+```{r eval=FALSE, fig.align="cener"}
+g<- dag()
+g$load_from_file('classic_bst')
+g$plot()
+```
+<iframe src="bst_no_heirarchy.html", width = 100%></iframe>
+
+Other projections
+========================================================
+incremental: true
+
+Create some reference classes.
+
+```{r eval=FALSE}
+g$plot_heirarchy()
+```
+<iframe src="bst_heirarchy.html"></iframe>
 
 
 Let's get this party starting?
