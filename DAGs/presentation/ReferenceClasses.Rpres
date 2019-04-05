@@ -84,8 +84,9 @@ incremental: true
 ```
 
 Process:
+* Create states
 * Assign weights to the transitions
-* And calculate what the boundries of the states as a whole are
+* And calculate metrics related to graph
 
 
 Rob's face
@@ -335,7 +336,7 @@ Things to note:
 
 - Under the hood:
   - A **S4** class
-  - It's own **environment**
+  - Its own **environment**
   
 ```{r, echo=FALSE, out.width= "50%"}
    knitr::include_graphics('./refClass.png')
@@ -519,7 +520,7 @@ The stack:
 
 Let's get this party started?
 ========================================================
-incremental: true
+
 
 ```{r}
 g <- dag(vertexCount = 0)
@@ -544,7 +545,7 @@ getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, desc
 
 In action
 ========================================================
-incremental: true
+
 
 State:
 ```{r}

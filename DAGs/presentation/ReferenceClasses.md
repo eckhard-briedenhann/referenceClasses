@@ -76,8 +76,9 @@ incremental: true
 <img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="50%" style="display: block; margin: auto;" />
 
 Process:
+* Create states
 * Assign weights to the transitions
-* And calculate what the boundries of the states as a whole are
+* And calculate metrics related to graph
 
 
 Rob's face
@@ -358,7 +359,7 @@ Things to note:
 
 - Under the hood:
   - A **S4** class
-  - It's own **environment**
+  - Its own **environment**
   
 <img src="./refClass.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" width="50%" />
 
@@ -559,7 +560,7 @@ The stack:
 
 Let's get this party started?
 ========================================================
-incremental: true
+
 
 
 ```r
@@ -624,7 +625,7 @@ getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, desc
 
 In action
 ========================================================
-incremental: true
+
 
 State:
 
