@@ -444,6 +444,8 @@ g$plot_heirarchy()
 
 Highlight features
 ========================================================
+incremental: true
+
 
 ```r
 g$plot_heirarchy(colorRootLeaves = T)
@@ -452,6 +454,8 @@ g$plot_heirarchy(colorRootLeaves = T)
 
 Highlight features
 ========================================================
+incremental: true
+
 
 ```r
 g$plot(colorRootLeaves = T)
@@ -460,6 +464,8 @@ g$plot(colorRootLeaves = T)
 
 Modify the structure
 ========================================================
+incremental: true
+
 
 ```r
 g$plot_heirarchy(colorRootLeaves = T, turn = T)
@@ -468,6 +474,8 @@ g$plot_heirarchy(colorRootLeaves = T, turn = T)
 
 Modify the structure
 ========================================================
+incremental: true
+
 
 ```r
 g$close_graph()
@@ -534,8 +542,6 @@ Some graph search
 Some graph search
 ========================================================
 <iframe src="proj_man_dag_cp_free.html" scrolling = "no" ></iframe>
-
-
 
 Overengineering for the win
 ========================================================

@@ -59,8 +59,6 @@ g$plot(colorRootLeaves = T, path_highlight =  g$critical_path(g$root_nodes(), g$
   visSave(file = paste0(dest,'proj_man_dag_cp_free.html'), background = 'transparent')
 
 
-
-
 # g <- dag(vertexCount = 0)
 # node_a <- g$newVertex(description = "A")
 # g$plot(height = 200,width = 500)
