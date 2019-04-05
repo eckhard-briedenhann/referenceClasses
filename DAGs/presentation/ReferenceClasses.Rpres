@@ -1,32 +1,54 @@
 ReferenceClasses
 ========================================================
 author: Rob Bennetto and Eckhard Briedenhann
-date: 2019-04-06
+css : chalcid.css
+width: 1920
+height: 1080
+date: 2019-04-06 
 autosize: true
 
-Introduction
+
+========================================================
+incremental: true
+
+<div align="center">
+<img src="chalcid_logo.png" style="background-color:transparent; border:0px;
+box-shadow:none;"></img>
+</div>
+
+ - Distributor of Icepack services
+ - Consulting and Ops Research in Africa
+ - Insurance and Logstics
+
+ 
 ========================================================
 
-Chalcid
-
+```{r, echo=FALSE, fig.align="center", out.width = "40%"}
+   knitr::include_graphics('./satRDay.png')
+```
 
 SatRday
 ========================================================
 incremental: true
 
-- What to wear?
+
+- What do we wear?
   - Normal clothes?
   - Formal clothes?
   - Zebra suit?
 
-- Fit in with other responsibilities 
+- How do we fit it in with all of our other responsibilities?
  - Will there be enough time?
  - How long will it take?
+ 
+ - What do we do first?
+  - Create presentation?
+  - Code up something interesting and hope the presentation self-materialises?
+  - Go find a corner to cry in?
 
-========================================================
-type: prompt
-transition-speed: slow
-```{r, echo=FALSE, fig.align="center", out.width = "60%"}
+***
+
+```{r, echo=FALSE, fig.align="center", out.width = "70%"}
    knitr::include_graphics('./stressed.jpg')
 ```
 
@@ -36,33 +58,58 @@ incremental: true
 
 What do we need?
 
+- A way to represent a **state** of being
+- A way to represent the **transitions** between states as well as their attributes (*time, awesomeness-factor, etc.*)
+- **Algorithms** to calculate the the optimal set of state to traverse
 
-TODO: Need a graph for this
+```{r, echo=FALSE, fig.align="center", out.width = "40%"}
+   knitr::include_graphics('./science.jpg')
+```
 
-StateA  --->     StateB  --->     StateC
+Graph?
+========================================================
 
+``` {r, echo=F, fig.align="center", out.width= "100%"}
+source('../graph_fns.R')
+```
+
+
+Graph?
+========================================================
+incremental: true
+
+```{r, echo=FALSE, fig.align="center", out.width= "50%"}
+   knitr::include_graphics('./simple_graphs/acyclic.png') 
+```
 
 Process:
+* Create states
 * Assign weights to the transitions
-* And calculate what the boundries of the states as a whole are
+* And calculate metrics related to graph
 
 
 Rob's face
 ========================================================
 
-```{r, echo=FALSE, fig.align="center", out.width= "100%"}
+```{r, echo=FALSE, fig.align="center", out.width= "80%"}
    knitr::include_graphics('./calc.gif')
 ```
 
-Directed Acyclic Graphs (aka DAGs)
+DAGs
 ========================================================
+
+DAGs
+========================================================
+incremental: true
+
+**Directed Acyclic Graphs (aka DAG)**
 
 * Nodes (Vertices)
 * Directed Edges ( pairs of nodes)
 * No Cycles
 
 
-```{r, echo=FALSE, fig.align="center", out.width= "40%"}
+```{r, echo=FALSE, fig.align="center", out.width= "30%"}
    knitr::include_graphics('./wikiDAG.png')
 ```
 
@@ -70,7 +117,86 @@ Representation problem
 ========================================================
 incremental: true
 
+Nodes:
+```{r}
+nodes <- list(n1 = list(id = 1),
+            n2 = list(id = 2),
+            n3 = list(id = 3), 
+            n4 = list(id = 4))
+```
+
+Helper functions:
+```{r}
+getNodeID <- function(node){
+  paste0("n",node$id)
+}
+```
+
+***
+
+Vectorised Graph:
+```{r}
+
+graph <- data.frame(From = c(1,1,2,3),
+                    To = c(2,3,4,4))
+```
+
+```{r ,echo=F}
+graph
+```
+```{r, echo = F}
+n1 <- list(id = 1)
+n2 <- list(id = 2)
+n3 <- list(id = 4)
+n4 <- list(id = 4)
+```
+
+List Graph:
+```{r}
+graph <- list()
+graph[[getNodeID(n1)]] <- list(n2,n3)
+graph[[getNodeID(n2)]] <- list(n4)
+graph[[getNodeID(n3)]] <- list(n4)
+```
+```{r, echo = F}
+graph
+```
+
+
+========================================================
+
+```{r, echo=FALSE, fig.align="center", out.width= "80%"}
+   knitr::include_graphics('./smellyCheeseCat.gif')
+```
+
+Why does this smell funny?
+========================================================
+incremental: true
+
+* **No typing** - live in the wild west
+* **No standard** - reinventing the wheel one line at a time
+* **No abstraction** - very verbose with a lot of index hunting
+
+Why does this smell funny?
+========================================================
+
+* **No typing** - live in the wild west
+* **No standard** - reinventing the wheel one line at a time
+* **No abstraction** - very verbose with a lot of index hunting
+
+```{r, echo=FALSE, fig.align="center", out.width= "50%"}
+   knitr::include_graphics('./noTime.jpeg')
+```
+
+
+C++ World
+========================================================
+incremental: true
+
 Object Orientated Programming:
+
+
+Node Class:
 ```{ width = "50%"}
 // Vector object
 class Node {
@@ -78,6 +204,10 @@ class Node {
     Node(int id):id(id){}
     int id;
 };
+```
+
+Graph Class:
+```
 
 class DAG {
   public:
@@ -87,8 +217,14 @@ class DAG {
   void addEdge(Node* from, Node* to){
     adjList[from->id].push_back(to);
   }
-  std::vector<*Node> adjList; 
+  std::vector<std::vector<*Node>> adjList; 
 };
+```
+
+***
+In practice:
+
+```
 
 // Init nodes
 Node n1(1); 
@@ -99,40 +235,13 @@ Node n3(3);
 graph.AddEdge(&n1, &n2);
 graph.AddEdge(&n2, &n3);
 ```
-***
 
-R:
-```
-// Helper function
-
-getID <- function(node){
-  paste0("v",node$id)
-}
-
-# Create Nodes
-
-n1 <- list(id = 1)
-n2 <- list(id = 2)
-n3 <- list(id = 3)
-
-# 1 --> 2 --> 3
-graph[[getID(n1)]] <- list(n2)
-graph[[paste0(n2)]] <- list(n2)
-```
-
-
+Object Orientated Programming in R?
 ========================================================
 
-```{r, echo=FALSE, fig.align="center", out.width= "100%"}
-   knitr::include_graphics('./smellyCheeseCat.gif')
+```{r, echo=FALSE, fig.align="center", out.width= "50%"}
+   knitr::include_graphics('./please.png')
 ```
-
-Why does this smell funny?
-========================================================
-
-* **No typing** - live in the wild west
-* **No abstraction** - very verbose 
-
 
 Object Orientated Programming in R
 ========================================================
@@ -151,7 +260,17 @@ print.node <- function(obj){
 }
 print(n1)
 ```
-***
+
+**Benefits:**
+
+* At least there is some kind of structure
+* Class specific functions might be useful
+
+Overall: 5/10
+
+Object Orientated Programming in R
+========================================================
+incremental: true
 
 S4 Classes:
 ``` {r}
@@ -167,8 +286,18 @@ print.node <- function(obj){
 print(n1)
 ```
 
-Reference Classes
+**Benefits**:
+
+* Typing
+* Structured way of creating and interacting with object (even though you're using `@` instread of `$`)
+
+Overall 8/10
+
+Reference Classes (This is where you clap hands)
 ========================================================
+incremental: true
+
+Reference Classes:
 
 ``` {r}
 node <- setRefClass("nodeR", fields = list(id = "numeric"), 
@@ -183,23 +312,243 @@ print(n1)
 
 ```
 
-
-Benefits:
+**Benefits**:
 
 * Unlike S3 and S4 methods belong to class
 * Able to have pointer like functionality
 * Powerful abstraction layer
 
+Overall 10/10 !
 
 
 ========================================================
 
-```{r, echo=FALSE, fig.align="center", out.width= "100%"}
+```{r, echo=FALSE, fig.align="center", out.width= "80%"}
    knitr::include_graphics('./attention.jpg')
 ```
 
+Reference Classes: Under the hood
+========================================================
+incremental: true
 
-Let's get this party starting?
+Things to note:
+
+- Under the hood:
+  - A **S4** class
+  - Its own **environment**
+  
+```{r, echo=FALSE, out.width= "50%"}
+   knitr::include_graphics('./refClass.png')
+```
+
+- Variables are **references** to underlying objects
+
+***
+Why worry?
+
+Copying reference classes:
+```{r}
+n1 <- node(id = 1)
+n1
+```
+
+Wrong way to copy:
+```{r}
+n2 = n1
+n2$id <- 2
+n1
+```
+```{r,echo = F}
+n1 <- node(id = 1)
+```
+
+```{r, echo=FALSE, fig.align="center",out.width= "50%"}
+   knitr::include_graphics('./copyRef.png')
+```
+
+
+Reference Classes: Under the hood
+========================================================
+incremental: true
+
+
+Right way to copy:
+```{r}
+n2 <- n1$copy()
+n2$id <- 2
+n1
+```
+
+
+
+Let's get this party started!
+========================================================
+incremental: true
+
+Create some reference classes.
+
+```{r eval=FALSE, fig.align="cener"}
+g<-dag()
+g$load_from_file('classic_bst')
+g$plot()
+```
+
+<div align="center">
+<iframe src="bst_no_heirarchy.html" scrolling = "no" ></iframe>
+</div>
+
+
+Other projections
+========================================================
+incremental: true
+
+```{r eval=FALSE}
+g$plot_heirarchy()
+```
+<iframe src="bst_heirarchy.html" scrolling = "no" ></iframe>
+
+Highlight features
+========================================================
+incremental: true
+
+```{r eval=FALSE}
+g$plot_heirarchy(colorRootLeaves = T)
+```
+<iframe src="bst_heirarchy_color.html" scrolling = "no" ></iframe>
+
+Highlight features
+========================================================
+incremental: true
+
+```{r eval=FALSE}
+g$plot(colorRootLeaves = T)
+```
+<iframe src="bst_no_heirarchy_color.html" scrolling = "no" ></iframe>
+
+Modify the structure
+========================================================
+incremental: true
+
+```{r eval=FALSE}
+g$plot_heirarchy(colorRootLeaves = T, turn = T)
+```
+<iframe src="bst_heirarchy_color_turn.html" scrolling = "no" ></iframe>
+
+Modify the structure
+========================================================
+incremental: true
+
+```{r eval=FALSE}
+g$close_graph()
+g$plot_heirarchy(colorRootLeaves = T, turn = T)
+```
+<iframe src="proj_man_dag.html" scrolling = "no" ></iframe>
+
+Some graph search
+========================================================
+incremental: true
+We might be interested in a feature of the graph
+- shortest paths
+- critical paths
+- min/max cut
+- or other features
+
+```{r eval=FALSE}
+g$shortest_path(g$root_nodes(), g$leaf_nodes())
+```
+
+<iframe src="proj_man_dag.html" scrolling="no"></iframe>
+ 
+Some graph search
+========================================================
+```{r eval=FALSE}
+g$plot_heirarchy(T, T, g$shortest_path(g$root_nodes(), g$leaf_nodes()))
+```
+<iframe src="proj_man_dag_sp.html" scrolling = "no" ></iframe>
+
+Some graph search
+========================================================
+```{r eval=FALSE}
+g$plot_heirarchy(T, T, g$critical_path(g$root_nodes(), g$leaf_nodes()))
+```
+<iframe src="proj_man_dag_cp.html" scrolling = "no" ></iframe>
+
+Steady on
+========================================================
+incremental: true
+You're right, that was too quick. What just happened?
+
+
+```{r, echo=FALSE, fig.align="center", out.width= "45%"}
+   knitr::include_graphics('./refclass_stack.png')
+```
+
+
+Overkill?
+========================================================
+incremental: true
+
+- No, just the right amount of kill.
+- Don't reinvent the wheel
+- Graphs can have multiple metrics/features
+- Extracting features consistently for search is troublesome
+- Which brings us to the Zebra suit.
+
+
+Some graph search
+========================================================
+<iframe src="proj_man_dag_sp_free.html" scrolling = "no" ></iframe>
+
+Some graph search
+========================================================
+<iframe src="proj_man_dag_cp_free.html" scrolling = "no" ></iframe>
+
+Overengineering for the win
+========================================================
+
+The stack:
+- Create **reference class** objects
+  - Nodes
+  - DAG
+- Implement algorithms using **Rcpp**
+  - Shortest path
+  - Path with highest awesomeness value
+- Visualise graphs using **d3** 
+- BONUS ROUND: Create presentation using **RPres** 
+- BONUS ROUND: Embed active charts
+
+***
+```{r, echo=FALSE, fig.align="center",out.width= "50%"}
+   knitr::include_graphics('./chuckApprove.jpeg')
+```
+
+
+Let's get this party started?
+========================================================
+
+
+```{r}
+g <- dag(vertexCount = 0)
+
+awake <- g$newVertex(description = "Awake")
+awake
+
+dressedA <- g$newVertex(description = "DressedA")
+dressedA
+
+dressedB <- g$newVertex(description = "DressedB")
+dressedB
+
+getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
+getDressedA
+
+getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
+
+```
+
+
+
+In action
 ========================================================
 
 
@@ -271,30 +620,5 @@ dag <- setRefClass("dag", fields = list( vertices = "list", edges = "list", adjL
                     }
                   ))
 ```
-
-
-
-In action
-========================================================
-incremental: true
-```{r}
-g <- dag(vertexCount = 0)
-
-awake <- g$newVertex(description = "Awake")
-awake
-
-dressedA <- g$newVertex(description = "DressedA")
-dressedA
-
-dressedB <- g$newVertex(description = "DressedB")
-dressedB
-
-getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
-getDressedA
-
-getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
-
-```
-
 
 
