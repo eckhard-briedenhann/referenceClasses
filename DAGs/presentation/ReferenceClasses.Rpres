@@ -22,11 +22,10 @@ box-shadow:none;"></img>
 
  
 ========================================================
-<div align="center">
-<img src="satRDay.png" style="background-color:transparent; border:0px;
-box-shadow:none;"></img>
-</div>
 
+```{r, echo=FALSE, fig.align="center", out.width = "40%"}
+   knitr::include_graphics('./satRDay.png')
+```
 
 SatRday
 ========================================================
