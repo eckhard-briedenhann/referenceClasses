@@ -47,9 +47,6 @@ How do we over engineer this?
 incremental: true
 
 What do we need?
-``` {r, echo=TRUE, fig.align="center", out.width= "100%"}
-source('../graph_fns.R')
-```
 
 - A way to represent a **state** of being
 - A way to represent the **transitions** between states as well as their attributes (*time, awesomeness-factor, etc.*)
@@ -62,6 +59,9 @@ source('../graph_fns.R')
 Graph?
 ========================================================
 
+``` {r, echo=F, fig.align="center", out.width= "100%"}
+source('../graph_fns.R')
+```
 
 
 Graph?
@@ -368,12 +368,6 @@ n1
 
 
 
-
-Overengineering for the win
-========================================================
-
-The stack:
-
 Let's get this party started?
 ========================================================
 incremental: true
@@ -397,6 +391,11 @@ Create some reference classes.
 g$plot_heirarchy()
 ```
 <iframe src="bst_heirarchy.html"></iframe>
+
+Overengineering for the win
+========================================================
+
+The stack:
 - Create **reference class** objects
   - Nodes
   - Edges
@@ -417,6 +416,30 @@ Let's get this party starting?
 ========================================================
 incremental: true
 
+```{r}
+g <- dag(vertexCount = 0)
+
+awake <- g$newVertex(description = "Awake")
+awake
+
+dressedA <- g$newVertex(description = "DressedA")
+dressedA
+
+dressedB <- g$newVertex(description = "DressedB")
+dressedB
+
+getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
+getDressedA
+
+getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
+
+```
+
+
+
+In action
+========================================================
+incremental: true
 
 State:
 ```{r}
@@ -486,30 +509,5 @@ dag <- setRefClass("dag", fields = list( vertices = "list", edges = "list", adjL
                     }
                   ))
 ```
-
-
-
-In action
-========================================================
-incremental: true
-```{r}
-g <- dag(vertexCount = 0)
-
-awake <- g$newVertex(description = "Awake")
-awake
-
-dressedA <- g$newVertex(description = "DressedA")
-dressedA
-
-dressedB <- g$newVertex(description = "DressedB")
-dressedB
-
-getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
-getDressedA
-
-getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
-
-```
-
 
 

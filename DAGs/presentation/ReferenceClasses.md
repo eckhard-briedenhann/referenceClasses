@@ -44,18 +44,15 @@ incremental: true
 
 What do we need?
 
-```r
-source('../graph_fns.R')
-```
-
 - A way to represent a **state** of being
 - A way to represent the **transitions** between states as well as their attributes (*time, awesomeness-factor, etc.*)
 - **Algorithms** to calculate the the optimal set of state to traverse
 
-<img src="./science.jpg" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="40%" style="display: block; margin: auto;" />
+<img src="./science.jpg" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="40%" style="display: block; margin: auto;" />
 
 Graph?
 ========================================================
+
 
 
 
@@ -404,12 +401,6 @@ ID: 1
 
 
 
-
-Overengineering for the win
-========================================================
-
-The stack:
-
 Let's get this party started?
 ========================================================
 incremental: true
@@ -435,7 +426,11 @@ Create some reference classes.
 g$plot_heirarchy()
 ```
 <iframe src="bst_heirarchy.html"></iframe>
-=======
+
+Overengineering for the win
+========================================================
+
+The stack:
 - Create **reference class** objects
   - Nodes
   - Edges
@@ -447,13 +442,77 @@ g$plot_heirarchy()
 - BONUS ROUND: Create presentation using **knitR** 
 
 ***
-<img src="./chuckApprove.jpeg" title="plot of chunk unnamed-chunk-28" alt="plot of chunk unnamed-chunk-28" width="50%" style="display: block; margin: auto;" />
+<img src="./chuckApprove.jpeg" title="plot of chunk unnamed-chunk-30" alt="plot of chunk unnamed-chunk-30" width="50%" style="display: block; margin: auto;" />
 
 
 Let's get this party starting?
 ========================================================
 incremental: true
 
+
+```r
+g <- dag(vertexCount = 0)
+
+awake <- g$newVertex(description = "Awake")
+awake
+```
+
+```
+State
+Description: Awake 
+ID: 0 
+```
+
+```r
+dressedA <- g$newVertex(description = "DressedA")
+dressedA
+```
+
+```
+State
+Description: DressedA 
+ID: 1 
+```
+
+```r
+dressedB <- g$newVertex(description = "DressedB")
+dressedB
+```
+
+```
+State
+Description: DressedB 
+ID: 2 
+```
+
+```r
+getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
+getDressedA
+```
+
+```
+Edge
+Description: Getting pretty 
+Weight: 1 
+From:
+State
+Description: Awake 
+ID: 0 
+To:
+State
+Description: DressedA 
+ID: 1 
+```
+
+```r
+getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
+```
+
+
+
+In action
+========================================================
+incremental: true
 
 State:
 
@@ -522,81 +581,5 @@ dag <- setRefClass("dag", fields = list( vertices = "list", edges = "list", adjL
                     }
                   ))
 ```
-
-
-
-In action
-========================================================
-incremental: true
-
-```r
-g <- dag(vertexCount = 0)
-
-awake <- g$newVertex(description = "Awake")
-awake
-```
-
-```
-State
-Description: Awake 
-ID: 0 
-```
-
-```r
-dressedA <- g$newVertex(description = "DressedA")
-dressedA
-```
-
-```
-State
-Description: DressedA 
-ID: 1 
-```
-
-```r
-dressedB <- g$newVertex(description = "DressedB")
-dressedB
-```
-
-```
-State
-Description: DressedB 
-ID: 2 
-```
-
-```r
-getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
-```
-
-```
-Edge Added
-```
-
-```r
-getDressedA
-```
-
-```
-Edge
-Description: Getting pretty 
-Weight: 1 
-From:
-State
-Description: Awake 
-ID: 0 
-To:
-State
-Description: DressedA 
-ID: 1 
-```
-
-```r
-getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
-```
-
-```
-Edge Added
-```
-
 
 
