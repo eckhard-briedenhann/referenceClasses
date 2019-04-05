@@ -430,7 +430,7 @@ g$plot()
 ```
 
 <div align="center">
-<iframe src="bst_no_heirarchy.html", width = 100%></iframe>
+<iframe src="bst_no_heirarchy.html" scrolling = "no" ></iframe>
 </div>
 
 
@@ -442,7 +442,7 @@ incremental: true
 ```r
 g$plot_heirarchy()
 ```
-<iframe src="bst_heirarchy.html"></iframe>
+<iframe src="bst_heirarchy.html" scrolling = "no" ></iframe>
 
 Highlight features
 ========================================================
@@ -450,7 +450,7 @@ Highlight features
 ```r
 g$plot_heirarchy(colorRootLeaves = T)
 ```
-<iframe src="bst_heirarchy_color.html"></iframe>
+<iframe src="bst_heirarchy_color.html" scrolling = "no" ></iframe>
 
 Highlight features
 ========================================================
@@ -458,7 +458,7 @@ Highlight features
 ```r
 g$plot(colorRootLeaves = T)
 ```
-<iframe src="bst_no_heirarchy_color.html"></iframe>
+<iframe src="bst_no_heirarchy_color.html" scrolling = "no" ></iframe>
 
 Modify the structure
 ========================================================
@@ -466,7 +466,7 @@ Modify the structure
 ```r
 g$plot_heirarchy(colorRootLeaves = T, turn = T)
 ```
-<iframe src="bst_heirarchy_color_turn.html"></iframe>
+<iframe src="bst_heirarchy_color_turn.html" scrolling = "no" ></iframe>
 
 Modify the structure
 ========================================================
@@ -475,7 +475,7 @@ Modify the structure
 g$close_graph()
 g$plot_heirarchy(colorRootLeaves = T, turn = T)
 ```
-<iframe src="proj_man_dag.html"></iframe>
+<iframe src="proj_man_dag.html" scrolling = "no" ></iframe>
 
 Some graph search
 ========================================================
@@ -491,15 +491,15 @@ We might be interested in a feature of the graph
 g$shortest_path(g$root_nodes(), g$leaf_nodes())
 ```
 
-<iframe src="proj_man_dag.html"></iframe>
-
+<iframe src="proj_man_dag.html" scrolling="no"></iframe>
+ 
 Some graph search
 ========================================================
 
 ```r
 g$plot_heirarchy(T, T, g$shortest_path(g$root_nodes(), g$leaf_nodes()))
 ```
-<iframe src="proj_man_dag_sp.html"></iframe>
+<iframe src="proj_man_dag_sp.html" scrolling = "no" ></iframe>
 
 Some graph search
 ========================================================
@@ -507,7 +507,7 @@ Some graph search
 ```r
 g$plot_heirarchy(T, T, g$critical_path(g$root_nodes(), g$leaf_nodes()))
 ```
-<iframe src="proj_man_dag_cp.html"></iframe>
+<iframe src="proj_man_dag_cp.html" scrolling = "no" ></iframe>
 
 Steady on
 ========================================================
@@ -516,6 +516,7 @@ You're right, that was too quick. What just happened?
 
 
 <img src="./refclass_stack.png" title="plot of chunk unnamed-chunk-36" alt="plot of chunk unnamed-chunk-36" width="45%" style="display: block; margin: auto;" />
+
 
 Overkill?
 ========================================================
@@ -528,6 +529,14 @@ incremental: true
 - Which brings us to the Zebra suit.
 
 
+Some graph search
+========================================================
+<iframe src="proj_man_dag_sp_free.html" scrolling = "no" ></iframe>
+
+Some graph search
+========================================================
+<iframe src="proj_man_dag_cp_free.html" scrolling = "no" ></iframe>
+
 
 
 Overengineering for the win
@@ -536,19 +545,19 @@ Overengineering for the win
 The stack:
 - Create **reference class** objects
   - Nodes
-  - Edges
   - DAG
-- Implement algorithms using **Rpp**
+- Implement algorithms using **Rcpp**
   - Shortest path
   - Path with highest awesomeness value
 - Visualise graphs using **d3** 
-- BONUS ROUND: Create presentation using **knitR** 
+- BONUS ROUND: Create presentation using **RPres** 
+- BONUS ROUND: Embed active charts
 
 ***
 <img src="./chuckApprove.jpeg" title="plot of chunk unnamed-chunk-37" alt="plot of chunk unnamed-chunk-37" width="50%" style="display: block; margin: auto;" />
 
 
-Let's get this party starting?
+Let's get this party started?
 ========================================================
 incremental: true
 

@@ -71,9 +71,6 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                       
                       return(e)
                     },
-                    # testMe = function(){
-                    #   boost_sample()
-                    # },
                     plot = function(height = 1080, width = 1920, colorRootLeaves = F, path_highlight = NULL){
                       if(edges %>% length > 0){
                         fs <- lapply(edges, function(i){ return(i$from$id)} ) %>% unlist
@@ -113,7 +110,6 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                         nodemat$color.border[nodemat$id %in% path_highlight] <- '#000000'
                         nodemat$borderWidth[nodemat$id %in% path_highlight]<- 3
                       }
-                      
                       return (visNetwork(nodemat, edgemat, height = height, width = width))
                     },
                     plot_heirarchy = function(colorRootLeaves = F, turn = F, path_highlight = NULL){
@@ -128,10 +124,13 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                       E<- read.csv(paste0(fileprefix, '_edges.csv'))
                       N<- read.csv(paste0(fileprefix, '_nodes.csv'))
                       for(i in 1:nrow(N)){
-                        newVertex(description = N$level[i] %>% as.character(), N$level[i])
+                        newVertex(description = N$description[i] %>% as.character(), N$level[i])
                       }
                       for(i in 1:nrow(E)){
-                        createTransition(from = g$vertices[[E$from[i]+1]], to = g$vertices[[E$to[i]+1]], weight = rnorm(1), description = E$branch[i] %>% as.character())
+                        createTransition(from = g$vertices[[E$from[i]+1]], 
+                                         to = g$vertices[[E$to[i]+1]], 
+                                         weight = E$weight[i], 
+                                         description = E$description[i] %>% as.character())
                       }
                     },
                     leaf_nodes= function(){
@@ -147,7 +146,7 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                       leaves<- leaf_nodes()
                       if(leaves %>% length > 0){
                         last_level<- lapply(leaves, function(i){ return(vertices[[i]]$level)} ) %>% unlist %>% max()
-                        end_node <- newVertex(description = "end", level = last_level + 1)
+                        end_node <- newVertex(description = "Present at\nSatRday", level = last_level + 1)
                         for(i in leaves){
                           createTransition(from = vertices[[i]], to = end_node, weight = 0, "")
                         }
