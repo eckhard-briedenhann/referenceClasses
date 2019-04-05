@@ -9,7 +9,8 @@ library(magrittr)
 #}
 # ref class for edge
 state <- setRefClass("vertex", fields = list(id = "numeric", 
-                                             description = "character"), 
+                                             description = "character", 
+                                             level = "numeric"), 
                      methods = list(
                        show = function(){
                           cat("State\nDescription:", description, "\nID:",id,"\n")
@@ -52,10 +53,13 @@ adjList <- setRefClass("adjList", fields = list(adjs = "list"),
 dag <- setRefClass("dag", fields = list(vertices = "list",
                                         edges = "list",
                                         adjList = "adjList",
-                                        vertexCount = "numeric"),
+                                        vertexCount = "numeric"), 
                   methods = list(
-                    newVertex = function(description){
-                      v <- state(id = vertexCount, description = description )
+                    initialize=function(...) {
+                      .self$initFields(vertexCount=0, ...)
+                    },
+                    newVertex = function(description, level = -1){
+                      v <- state(id = vertexCount, description = description, level = level)
                       vertexCount <<- vertexCount + 1
                       vertices <<- c(vertices,v)
                       return(v)
@@ -70,70 +74,71 @@ dag <- setRefClass("dag", fields = list(vertices = "list",
                     # testMe = function(){
                     #   boost_sample()
                     # },
-                    plot = function(height = 1080, width = 1920){
+                    plot = function(height = 1080, width = 1920, colorRootLeaves = F){
                       if(edges %>% length > 0){
-                        edgemat<- data.frame( 
-                                              from = lapply(edges, function(i){ return(i$from$id)} ) %>% unlist,
-                                              to = lapply(edges, function(i){ return(i$to$id)} ) %>% unlist,
-                                              arrows =  "middle",
-                                              weight = lapply(edges, function(i){ return(i$weight)} ) %>% unlist
-                                            )
+                        fs <- lapply(edges, function(i){ return(i$from$id)} ) %>% unlist
+                        ts <- lapply(edges, function(i){ return(i$to$id)} ) %>% unlist
+                        edgemat<- data.frame(from = fs,
+                                             to = ts,
+                                             arrows =  "middle",
+                                             weight = lapply(edges, function(i){ return(i$weight)} ) %>% unlist )
                       }else{
                         edgemat <- NULL
                       }
                       nodemat <- data.frame(
                         id = lapply(vertices, function(i){return(i$id)}) %>% unlist,
-                        label = lapply(vertices, function(i){return(i$description)}) %>% unlist) 
+                        label = lapply(vertices, function(i){return(i$description)}) %>% unlist,
+                        level = lapply(vertices, function(i){return(i$level)}) %>% unlist)
+                      if(colorRootLeaves){
+                        nodemat$color <- '#97C2FC'
+                        nodemat$color[leaf_nodes()] <- '#AA3939' #red
+                        nodemat$color[root_nodes()] <- '#2D8633' #green
+                      }
                       
                       return (visNetwork(nodemat, edgemat, height = height, width = width))
                     },
-                    plot_heirarchy = function(){
-                      return (plot() %>% visHierarchicalLayout())
+                    plot_heirarchy = function(colorRootLeaves = F, turn = F){
+                      direction = NULL
+                      if(turn){
+                        direction <- 'lr'
+                      }
+                      return (plot(colorRootLeaves = colorRootLeaves) %>% visHierarchicalLayout(direction = direction))
+                    },
+                    load_from_file = function(fileprefix){
+                      E<- read.csv(paste0(fileprefix, '_edges.csv'))
+                      N<- read.csv(paste0(fileprefix, '_nodes.csv'))
+                      for(i in 1:nrow(N)){
+                        newVertex(description = N$level[i] %>% as.character(), N$level[i])
+                      }
+                      for(i in 1:nrow(E)){
+                        createTransition(from = g$vertices[[E$from[i]+1]], to = g$vertices[[E$to[i]+1]], weight = rnorm(1), description = E$branch[i] %>% as.character())
+                      }
+                    },
+                    leaf_nodes= function(){
+                      get_untouched_nodes(e_start = lapply(edges, function(i){ return(i$from$id)} ) %>% unlist, 
+                                    num_nodes = vertexCount)
+                    },
+                    root_nodes= function(){
+                      get_untouched_nodes(e_start = lapply(edges, function(i){ return(i$to$id)} ) %>% unlist, 
+                                     num_nodes = vertexCount)
+                    },
+                    close_graph = function(){
+                      #find all leaf nodes, connect them to the a new dummy node which closes the graph.
+                      leaves<- leaf_nodes()
+                      if(leaves %>% length > 0){
+                        last_level<- lapply(leaves, function(i){ return(vertices[[i]]$level)} ) %>% unlist %>% max()
+                        end_node <- newVertex(description = "end", level = last_level + 1)
+                        for(i in leaves){
+                          createTransition(from = vertices[[i]], to = end_node, weight = 0, "")
+                        }
+                      }
                     }
                   ))
 
 
 
-# g <- dag(vertexCount = 0)
-# node_a <- g$newVertex(description = "A")
-# g$plot(height = 200,width = 500)
-# node_b <- g$newVertex(description = "B")
-# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
-# # disable the physics engine so that we can create some static charts.
-# getDressedA <- g$createTransition(from = node_a, to = node_b, weight = 1, description = "Step 1")
-# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
-# 
-# node_c <- g$newVertex(description = "C")
-# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
-# 
-# getDressedB <- g$createTransition(from = node_b, to = node_c, weight = 0.5, description = "Step 2")
-# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
-
-#getDressedCA <- g$createTransition(from = node_c, to = node_a, weight = 1, description = "Step 3")
-#g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
-
-# getDressedAC <- g$createTransition(from = node_a, to = node_c, weight = 1, description = "Step 3")
-# g$plot(height = 200,width = 500) %>% visPhysics(enabled = FALSE) 
-
-# g$plot() %>% visExport(type = 'png', name = 'dag_simple')  
-# 
-# visSave(g$plot(), 'dag_simple.html' , background = "white")
 
 
 
-g <- dag(vertexCount = 0)
-n = 30
-for(i in 1:n){
-  g$newVertex(description = i %>% as.character())
-}
-s<- function(n) { sample(1:n, n)}
-fs<- c(s(n), s(n)); ts <- c(s(n), s(n));
-for(i in 1:length(fs)){
-  g$createTransition(from =g$vertices[[fs[i]]], 
-                     to = g$vertices[[ts[i]]],
-                     weight = rnorm(1), 
-                    'random edge') 
-}
 
-#g$plot()
-#g$plot_heirarchy()
+

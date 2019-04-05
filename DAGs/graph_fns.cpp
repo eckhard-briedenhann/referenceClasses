@@ -49,6 +49,24 @@ NumericVector boost_sample_2(){
 }
 
 // [[Rcpp::export]]
+std::vector<int> get_untouched_nodes(NumericVector e_start, int num_nodes){
+  std::vector<bool> isleaf(num_nodes, true);
+  std::vector<int> s = Rcpp::as<std::vector<int>>(e_start);
+  for(int i =0; i < s.size(); i++){
+    isleaf[s[i]] = false;
+  }
+  std::vector<int> leaf_indexes;
+  for(int i = 0; i < isleaf.size(); i++){
+    if(isleaf[i]){
+      leaf_indexes.push_back(i + 1); // +1 because R is using 1-based indexing
+    }
+  }
+  return leaf_indexes;
+}
+
+
+
+// [[Rcpp::export]]
 NumericVector shortest_path_a_b(int a, int b, NumericVector froms, NumericVector tos, NumericVector weights){
   // DirectedGraph g;
   // 

@@ -45,14 +45,14 @@ incremental: true
 What do we need?
 
 ```r
-source('../graph_fns.R') 
+source('../graph_fns.R')
 ```
 
 - A way to represent a **state** of being
 - A way to represent the **transitions** between states as well as their attributes (*time, awesomeness-factor, etc.*)
 - **Algorithms** to calculate the the optimal set of state to traverse
 
-<img src="./science.jpg" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="40%" style="display: block; margin: auto;" />
+<img src="./science.jpg" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="40%" style="display: block; margin: auto;" />
 
 Graph?
 ========================================================
@@ -63,8 +63,7 @@ Graph?
 ========================================================
 incremental: true
 
-
-<img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+<img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
 Process:
 * Assign weights to the transitions
@@ -74,8 +73,7 @@ Process:
 Rob's face
 ========================================================
 
-
-<img src="./calc.gif" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="80%" style="display: block; margin: auto;" />
+<img src="./calc.gif" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="80%" style="display: block; margin: auto;" />
 
 DAGs
 ========================================================
@@ -90,8 +88,8 @@ incremental: true
 * Directed Edges ( pairs of nodes)
 * No Cycles
 
-<img src="./wikiDAG.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="30%" style="display: block; margin: auto;" />
 
+<img src="./wikiDAG.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="30%" style="display: block; margin: auto;" />
 
 Representation problem
 ========================================================
@@ -168,7 +166,7 @@ $n4[[1]]$id
 
 ========================================================
 
-<img src="./smellyCheeseCat.gif" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" width="80%" style="display: block; margin: auto;" />
+<img src="./smellyCheeseCat.gif" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="80%" style="display: block; margin: auto;" />
 
 Why does this smell funny?
 ========================================================
@@ -185,7 +183,7 @@ Why does this smell funny?
 * **No standard** - reinventing the wheel one line at a time
 * **No abstraction** - very verbose with a lot of index hunting
 
-<img src="./noTime.jpeg" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" width="50%" style="display: block; margin: auto;" />
+<img src="./noTime.jpeg" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" width="50%" style="display: block; margin: auto;" />
 
 
 C++ World
@@ -235,11 +233,10 @@ graph.AddEdge(&n1, &n2);
 graph.AddEdge(&n2, &n3);
 ```
 
-
 Object Orientated Programming in R?
 ========================================================
 
-<img src="./please.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" width="50%" style="display: block; margin: auto;" />
+<img src="./please.png" title="plot of chunk unnamed-chunk-17" alt="plot of chunk unnamed-chunk-17" width="50%" style="display: block; margin: auto;" />
 
 Object Orientated Programming in R
 ========================================================
@@ -338,7 +335,7 @@ Overall 10/10 !
 
 ========================================================
 
-<img src="./attention.jpg" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" width="80%" style="display: block; margin: auto;" />
+<img src="./attention.jpg" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" width="80%" style="display: block; margin: auto;" />
 
 Reference Classes: Under the hood
 ========================================================
@@ -395,8 +392,33 @@ TODO>: Graph explanation and function case
 Overengineering for the win
 ========================================================
 
-
 The stack:
+
+Let's get this party started?
+========================================================
+incremental: true
+
+Create some reference classes.
+
+
+```r
+g<- dag()
+g$load_from_file('classic_bst')
+g$plot()
+```
+<iframe src="bst_no_heirarchy.html", width = 100%></iframe>
+
+Other projections
+========================================================
+incremental: true
+
+Create some reference classes.
+
+
+```r
+g$plot_heirarchy()
+```
+<iframe src="bst_heirarchy.html"></iframe>
 
 
 Let's get this party starting?
