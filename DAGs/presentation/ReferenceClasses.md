@@ -44,26 +44,23 @@ incremental: true
 
 What do we need?
 
-```r
-source('../graph_fns.R')
-```
-
 - A way to represent a **state** of being
 - A way to represent the **transitions** between states as well as their attributes (*time, awesomeness-factor, etc.*)
 - **Algorithms** to calculate the the optimal set of state to traverse
 
-<img src="./science.jpg" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="40%" style="display: block; margin: auto;" />
+<img src="./science.jpg" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="40%" style="display: block; margin: auto;" />
 
 Graph?
 ========================================================
 
-TODO: Slide explaining graphs
+
+
 
 Graph?
 ========================================================
 incremental: true
 
-<img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+<img src="./simple_graphs/acyclic.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="50%" style="display: block; margin: auto;" />
 
 Process:
 * Assign weights to the transitions
@@ -93,6 +90,7 @@ incremental: true
 
 Representation problem
 ========================================================
+incremental: true
 
 Nodes:
 
@@ -339,16 +337,22 @@ Overall 10/10 !
 
 Reference Classes: Under the hood
 ========================================================
-#incremental: true
+incremental: true
 
-Implementation:
-- **S4** class
-- In own **environment**
+Things to note:
 
-TODO: Add image showing explanation
+- Under the hood:
+  - A **S4** class
+  - It's own **environment**
+  
+<img src="./refClass.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" width="50%" />
+
+- Variables are **references** to underlying objects
 
 ***
 Why worry?
+
+Copying reference classes:
 
 ```r
 n1 <- node(id = 1)
@@ -373,6 +377,15 @@ Node
 ID: 2 
 ```
 
+
+<img src="./copyRef.png" title="plot of chunk unnamed-chunk-26" alt="plot of chunk unnamed-chunk-26" width="50%" style="display: block; margin: auto;" />
+
+
+Reference Classes: Under the hood
+========================================================
+incremental: true
+
+
 Right way to copy:
 
 ```r
@@ -386,13 +399,7 @@ Node
 ID: 1 
 ```
 
-TODO>: Graph explanation and function case
 
-
-Overengineering for the win
-========================================================
-
-The stack:
 
 Let's get this party started?
 ========================================================
@@ -420,11 +427,92 @@ g$plot_heirarchy()
 ```
 <iframe src="bst_heirarchy.html"></iframe>
 
+Overengineering for the win
+========================================================
+
+The stack:
+- Create **reference class** objects
+  - Nodes
+  - Edges
+  - DAG
+- Implement algorithms using **Rpp**
+  - Shortest path
+  - Path with highest awesomeness value
+- Visualise graphs using **d3** 
+- BONUS ROUND: Create presentation using **knitR** 
+
+***
+<img src="./chuckApprove.jpeg" title="plot of chunk unnamed-chunk-30" alt="plot of chunk unnamed-chunk-30" width="50%" style="display: block; margin: auto;" />
+
 
 Let's get this party starting?
 ========================================================
 incremental: true
 
+
+```r
+g <- dag(vertexCount = 0)
+
+awake <- g$newVertex(description = "Awake")
+awake
+```
+
+```
+State
+Description: Awake 
+ID: 0 
+```
+
+```r
+dressedA <- g$newVertex(description = "DressedA")
+dressedA
+```
+
+```
+State
+Description: DressedA 
+ID: 1 
+```
+
+```r
+dressedB <- g$newVertex(description = "DressedB")
+dressedB
+```
+
+```
+State
+Description: DressedB 
+ID: 2 
+```
+
+```r
+getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
+getDressedA
+```
+
+```
+Edge
+Description: Getting pretty 
+Weight: 1 
+From:
+State
+Description: Awake 
+ID: 0 
+To:
+State
+Description: DressedA 
+ID: 1 
+```
+
+```r
+getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
+```
+
+
+
+In action
+========================================================
+incremental: true
 
 State:
 
@@ -493,81 +581,5 @@ dag <- setRefClass("dag", fields = list( vertices = "list", edges = "list", adjL
                     }
                   ))
 ```
-
-
-
-In action
-========================================================
-incremental: true
-
-```r
-g <- dag(vertexCount = 0)
-
-awake <- g$newVertex(description = "Awake")
-awake
-```
-
-```
-State
-Description: Awake 
-ID: 0 
-```
-
-```r
-dressedA <- g$newVertex(description = "DressedA")
-dressedA
-```
-
-```
-State
-Description: DressedA 
-ID: 1 
-```
-
-```r
-dressedB <- g$newVertex(description = "DressedB")
-dressedB
-```
-
-```
-State
-Description: DressedB 
-ID: 2 
-```
-
-```r
-getDressedA <- g$createTransition(from = awake,to = dressedA, weight = 1, description = "Getting pretty")
-```
-
-```
-Edge Added
-```
-
-```r
-getDressedA
-```
-
-```
-Edge
-Description: Getting pretty 
-Weight: 1 
-From:
-State
-Description: Awake 
-ID: 0 
-To:
-State
-Description: DressedA 
-ID: 1 
-```
-
-```r
-getDressedB <- g$createTransition(from = awake,to = dressedB, weight = 0.5, description = "Getting cool")
-```
-
-```
-Edge Added
-```
-
 
 
